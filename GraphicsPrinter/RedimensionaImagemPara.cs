@@ -53,7 +53,7 @@ namespace GraphicsPrinter
         {
             Image logo = _adicionarImagem.Logo;
 
-            if (logo.Size.Width != 50 || logo.Size.Height != 24)
+            if (logo.Size.Width != 50 || logo.Size.Height != 50)
             {
                 logo = Redimensionar(logo, _largura, _altura);
             }
