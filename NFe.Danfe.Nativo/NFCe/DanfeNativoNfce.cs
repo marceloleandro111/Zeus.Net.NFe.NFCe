@@ -116,7 +116,7 @@ namespace NFe.Danfe.Nativo.NFCe
 
             if (_logo != null)
             {
-                new RedimensionaImagemPara(new AdicionarImagem(g, _logo, x, y), 50, 24).Desenhar();
+                new RedimensionaImagemPara(new AdicionarImagem(g, _logo, x, y), 50, 50).Desenhar();
             }
 
             if (_logo == null)
@@ -125,21 +125,36 @@ namespace NFe.Danfe.Nativo.NFCe
             }
 
 #region cabeçalho
-            int tamanhoFonteTitulo = 6;
+            int tamanhoFonteTitulo = 8;
 
-            string cnpjERazaoSocial = CnpjERazaoSocial();
+            string razaoSocialEmitente = RazaoSocialEmitente();
 
-            y = EscreverLinhaTitulo(g, cnpjERazaoSocial, tamanhoFonteTitulo, larguraLogo, x, y, larguraLinha);
+            y = EscreverLinhaTitulo(g, razaoSocialEmitente, 12, larguraLogo, x, y, larguraLinha);
+
+            string cnpjEmitente = CnpjEmitente();
+
+            y = EscreverLinhaTitulo(g, cnpjEmitente, tamanhoFonteTitulo, larguraLogo, x, y, larguraLinha);
 
             string enderecoEmitente = EnderecoEmitente();
 
-            y = EscreverLinhaTitulo(g, enderecoEmitente, tamanhoFonteTitulo, larguraLogo, x, y, larguraLinha);
+            var alturaEndereco = EscreverLinhaTitulo(g, enderecoEmitente, tamanhoFonteTitulo, larguraLogo, x, y, larguraLinha);
 
-            const string mensagemGoverno = "Documento Auxiliar Da Nota Fiscal de Consumidor Eletrônica";
+            y = alturaEndereco + 11;
 
-            y = EscreverLinhaTitulo(g, mensagemGoverno, tamanhoFonteTitulo, larguraLogo, x, y, larguraLinha);
+            if (alturaEndereco < 75)
+            {
+                y = 75;
+            }
 
-            y += 5;
+            LinhaHorizontal(g, x, y, larguraLinha);
+
+            y += 2;
+
+            string mensagemGoverno = "Documento Auxiliar Da Nota Fiscal de Consumidor Eletrônica".ToUpper();
+
+            y = EscreverLinhaTitulo(g, mensagemGoverno, 7, 0, x, y, larguraLinha);
+
+            y += 2;
             #endregion
 
 #region contingência
@@ -523,22 +538,30 @@ namespace NFe.Danfe.Nativo.NFCe
             return enderecoEmitenteBuilder.ToString();
         }
 
-        private string CnpjERazaoSocial()
+        private string RazaoSocialEmitente()
         {
             string nomeEmpresa = string.Empty;
 
             emit emitente = _nfe.infNFe.emit;
+
+            if (!string.IsNullOrEmpty(emitente.xFant))
+            {
+                nomeEmpresa = emitente.xFant;
+            }
 
             if (!string.IsNullOrEmpty(emitente.xNome))
             {
                 nomeEmpresa = emitente.xNome;
             }
 
-            if (!string.IsNullOrEmpty(emitente.xFant))
-            {
-                nomeEmpresa = emitente.xFant;
-            }
-            string cnpjERazaoSocial = string.Format("CNPJ: {0} {1}", emitente.CNPJ, nomeEmpresa);
+            return nomeEmpresa;
+        }
+
+        private string CnpjEmitente()
+        {
+            emit emitente = _nfe.infNFe.emit;
+
+            string cnpjERazaoSocial = string.Format("CNPJ: {0}", emitente.CNPJ);
             return cnpjERazaoSocial;
         }
 
