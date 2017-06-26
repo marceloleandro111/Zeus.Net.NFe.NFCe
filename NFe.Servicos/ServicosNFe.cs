@@ -608,7 +608,15 @@ namespace NFe.Servicos
         }
 
         public RetornoRecepcaoEvento RecepcaoEventoManifestacaoDestinatario(int idlote, int sequenciaEvento,
-            string chaveNFe, TipoEventoManifestacaoDestinatario tipoEventoManifestacaoDestinatario, string cpfcnpj,
+                    string chaveNFe, TipoEventoManifestacaoDestinatario tipoEventoManifestacaoDestinatario, string cpfcnpj,
+                    string justificativa = null)
+        {
+            return RecepcaoEventoManifestacaoDestinatario(idlote, sequenciaEvento, new[] { chaveNFe },
+                tipoEventoManifestacaoDestinatario, cpfcnpj, justificativa);
+        }
+
+        public RetornoRecepcaoEvento RecepcaoEventoManifestacaoDestinatario(int idlote, int sequenciaEvento,
+            string[] chavesNFe, TipoEventoManifestacaoDestinatario tipoEventoManifestacaoDestinatario, string cpfcnpj,
             string justificativa = null)
         {
             var versaoServico =
@@ -620,26 +628,32 @@ namespace NFe.Servicos
                 descEvento = tipoEventoManifestacaoDestinatario.Descricao(),
                 xJust = justificativa
             };
-            var infEvento = new infEventoEnv
+
+            var eventos = new List<evento>();
+            foreach (var chaveNFe in chavesNFe)
             {
-                cOrgao = _cFgServico.cUF == Estado.RS ? _cFgServico.cUF : Estado.AN,
-                //RS possui endereço próprio para manifestação do destinatário. Demais UFs usam o ambiente nacional
-                tpAmb = _cFgServico.tpAmb,
-                chNFe = chaveNFe,
-                dhEvento = DateTime.Now,
-                tpEvento = (int) tipoEventoManifestacaoDestinatario,
-                nSeqEvento = sequenciaEvento,
-                verEvento = versaoServico,
-                detEvento = detEvento
-            };
-            if (cpfcnpj.Length == 11)
-                infEvento.CPF = cpfcnpj;
-            else
-                infEvento.CNPJ = cpfcnpj;
+                var infEvento = new infEventoEnv
+                {
+                    cOrgao = _cFgServico.cUF == Estado.RS ? _cFgServico.cUF : Estado.AN,
+                    //RS possui endereço próprio para manifestação do destinatário. Demais UFs usam o ambiente nacional
+                    tpAmb = _cFgServico.tpAmb,
+                    chNFe = chaveNFe,
+                    dhEvento = DateTime.Now,
+                    tpEvento = (int)tipoEventoManifestacaoDestinatario,
+                    nSeqEvento = sequenciaEvento,
+                    verEvento = versaoServico,
+                    detEvento = detEvento
+                };
+                if (cpfcnpj.Length == 11)
+                    infEvento.CPF = cpfcnpj;
+                else
+                    infEvento.CNPJ = cpfcnpj;
 
-            var evento = new evento {versao = versaoServico, infEvento = infEvento};
+                eventos.Add(new evento { versao = versaoServico, infEvento = infEvento });
+            }
 
-            var retorno = RecepcaoEvento(idlote, new List<evento> {evento},
+
+            var retorno = RecepcaoEvento(idlote, eventos,
                 ServicoNFe.RecepcaoEventoManifestacaoDestinatario);
             return retorno;
         }
@@ -863,7 +877,7 @@ namespace NFe.Servicos
                     string conteudo = Compressao.Unzip(retConsulta.loteDistDFeInt[i].XmlNfe);
                     string chNFe = string.Empty;
 
-                    if (conteudo.StartsWith("<retNFe"))
+                    if (conteudo.StartsWith("<resNFe"))
                     {
                         var retConteudo =
                             FuncoesXml.XmlStringParaClasse<Classes.Servicos.DistribuicaoDFe.Schemas.resNFe>(conteudo);
@@ -876,8 +890,21 @@ namespace NFe.Servicos
                                 conteudo);
                         chNFe = procEventoNFeConteudo.retEvento.infEvento.chNFe;
                     }
+                    else if (conteudo.StartsWith("<resEvento"))
+                    {
+                        var resEventoConteudo =
+                            FuncoesXml.XmlStringParaClasse<Classes.Servicos.DistribuicaoDFe.Schemas.resEvento>(
+                                conteudo);
+                        chNFe = resEventoConteudo.chNFe;
+                    }
 
                     string[] schema = retConsulta.loteDistDFeInt[i].schema.Split('_');
+
+                    if (chNFe == string.Empty)
+                    {
+                        chNFe = DateTime.Now.ParaDataHoraString() + "_SEMCHAVE_";
+                    }
+
                     SalvarArquivoXml(chNFe + "_" + schema[0] + ".xml", conteudo);
 
                 }
@@ -1159,7 +1186,7 @@ namespace NFe.Servicos
         ///     Consulta a Situação da NFe
         /// </summary>
         /// <returns>Retorna um objeto da classe RetornoNfeConsultaProtocolo com os dados da Situação da NFe</returns>
-        public RetornoNfeDownload NfeDownloadNf(string cnpj, List<string> chaves)
+        public RetornoNfeDownload NfeDownloadNf(string cnpj, List<string> chaves, string nomeSaida = "")
         {
             var versaoServico = ServicoNFe.NfeDownloadNF.VersaoServicoParaString(_cFgServico.VersaoNfeDownloadNF);
 
@@ -1196,7 +1223,12 @@ namespace NFe.Servicos
             var dadosDownload = new XmlDocument();
             dadosDownload.LoadXml(xmlDownload);
 
-            SalvarArquivoXml(cnpj + "-ped-down.xml", xmlDownload);
+            if (nomeSaida == "")
+            {
+                nomeSaida = cnpj;
+            }
+
+            SalvarArquivoXml(nomeSaida + "-ped-down.xml", xmlDownload);
 
             XmlNode retorno;
             try
@@ -1211,7 +1243,7 @@ namespace NFe.Servicos
             var retornoXmlString = retorno.OuterXml;
             var retDownload = new retDownloadNFe().CarregarDeXmlString(retornoXmlString);
 
-            SalvarArquivoXml(cnpj + "-down.xml", retornoXmlString);
+            SalvarArquivoXml(nomeSaida + "-down.xml", retornoXmlString);
 
             return new RetornoNfeDownload(pedDownload.ObterXmlString(), retDownload.ObterXmlString(), retornoXmlString, retDownload);
 

@@ -516,7 +516,12 @@ namespace NFe.Danfe.Nativo.NFCe
                 LinhaHorizontal(g, _x, _y, larguraLinha);
             }
 
-            string observacoes = _nfe.infNFe?.infAdic?.infCpl;
+            string observacoes = string.Empty;
+
+            if (_nfe != null)
+                if (_nfe.infNFe != null)
+                    if (_nfe.infNFe.infAdic != null)
+                        observacoes = _nfe.infNFe.infAdic.infCpl;
 
             if (!string.IsNullOrEmpty(observacoes))
             {
@@ -649,8 +654,11 @@ namespace NFe.Danfe.Nativo.NFCe
                 mensagem.Append(dest.CNPJ);
             }
 
-            mensagem.Append(" ");
-            mensagem.Append(dest.xNome);
+            if (!string.IsNullOrEmpty(dest.xNome))
+            {
+                mensagem.Append(" ");
+                mensagem.Append(dest.xNome);
+            }
 
             enderDest enderecoDest = dest.enderDest;
 
