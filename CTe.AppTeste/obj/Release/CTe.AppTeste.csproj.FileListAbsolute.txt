@@ -1,0 +1,8 @@
+C:\Users\rober\Documents\Projetos\Zeus\Zeus.Net.NFe.NFCe\CTe.AppTeste\obj\Release\CTe.AppTeste.csprojResolveAssemblyReference.cache
+C:\Users\rober\Documents\Projetos\Zeus\Zeus.Net.NFe.NFCe\CTe.AppTeste\obj\Release\InputBoxWindow.baml
+C:\Users\rober\Documents\Projetos\Zeus\Zeus.Net.NFe.NFCe\CTe.AppTeste\obj\Release\InputBoxWindow.g.cs
+C:\Users\rober\Documents\Projetos\Zeus\Zeus.Net.NFe.NFCe\CTe.AppTeste\obj\Release\MainWindow.g.cs
+C:\Users\rober\Documents\Projetos\Zeus\Zeus.Net.NFe.NFCe\CTe.AppTeste\obj\Release\App.g.cs
+C:\Users\rober\Documents\Projetos\Zeus\Zeus.Net.NFe.NFCe\CTe.AppTeste\obj\Release\GeneratedInternalTypeHelper.g.cs
+C:\Users\rober\Documents\Projetos\Zeus\Zeus.Net.NFe.NFCe\CTe.AppTeste\obj\Release\CTe.AppTeste_MarkupCompile.cache
+C:\Users\rober\Documents\Projetos\Zeus\Zeus.Net.NFe.NFCe\CTe.AppTeste\obj\Release\CTe.AppTeste_MarkupCompile.lref

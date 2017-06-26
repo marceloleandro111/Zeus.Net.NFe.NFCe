@@ -1,0 +1,5 @@
+C:\Users\rober\Documents\Projetos\Zeus\bin\Release\CTe.Classes.dll
+C:\Users\rober\Documents\Projetos\Zeus\bin\Release\CTe.Classes.pdb
+C:\Users\rober\Documents\Projetos\Zeus\Zeus.Net.NFe.NFCe\CTe.Classes\obj\Release\CTe.Classes.csprojResolveAssemblyReference.cache
+C:\Users\rober\Documents\Projetos\Zeus\Zeus.Net.NFe.NFCe\CTe.Classes\obj\Release\CTe.Classes.dll
+C:\Users\rober\Documents\Projetos\Zeus\Zeus.Net.NFe.NFCe\CTe.Classes\obj\Release\CTe.Classes.pdb

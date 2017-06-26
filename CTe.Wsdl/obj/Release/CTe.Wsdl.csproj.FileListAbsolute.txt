@@ -1,0 +1,4 @@
+C:\Users\rober\Documents\Projetos\Zeus\bin\Release\CTe.Wsdl.dll
+C:\Users\rober\Documents\Projetos\Zeus\bin\Release\CTe.Wsdl.pdb
+C:\Users\rober\Documents\Projetos\Zeus\Zeus.Net.NFe.NFCe\CTe.Wsdl\obj\Release\CTe.Wsdl.dll
+C:\Users\rober\Documents\Projetos\Zeus\Zeus.Net.NFe.NFCe\CTe.Wsdl\obj\Release\CTe.Wsdl.pdb

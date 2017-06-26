@@ -1,0 +1,5 @@
+C:\Users\rober\Documents\Projetos\Zeus\bin\Release\CTe.Utils.dll
+C:\Users\rober\Documents\Projetos\Zeus\bin\Release\CTe.Utils.pdb
+C:\Users\rober\Documents\Projetos\Zeus\Zeus.Net.NFe.NFCe\CTe.Utils\obj\Release\CTe.Utils.csprojResolveAssemblyReference.cache
+C:\Users\rober\Documents\Projetos\Zeus\Zeus.Net.NFe.NFCe\CTe.Utils\obj\Release\CTe.Utils.dll
+C:\Users\rober\Documents\Projetos\Zeus\Zeus.Net.NFe.NFCe\CTe.Utils\obj\Release\CTe.Utils.pdb
